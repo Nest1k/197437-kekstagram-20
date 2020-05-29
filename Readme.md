@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Konstanz Bakharev](https://up.htmlacademy.ru/javascript/20/user/197437).
-* Наставник: `Неизвестно`.
+* Наставник: [Konstanz Bakharev](https://up.htmlacademy.ru/javascript/20/user/197437).
 
 ---
 
