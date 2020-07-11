@@ -75,39 +75,92 @@ pictures.appendChild(fragment);
 
 
 var massUserComment = massUser[0].comments[0];
-//  document.querySelector('.big-picture').classList.remove('hidden');
 
-document.querySelector('.big-picture__img').children[0].src = massUser[0].url;
-document.querySelector('.likes-count').textContent = massUser[0].likes;
-document.querySelector('.comments-count').textContent = massUser[0].comments.length;
+// Для одной полноразмерной фотографии
+var bigPicture = document.querySelector('.big-picture');
 
-var socialComments = document.querySelector('.social__comments');
-
-
-function commentUser () {
-  var newComment = document.createElement('li');
-  newComment.classList.add('social__comment');
-  var newCommentAvatar = document.createElement('img');
-  newCommentAvatar.classList.add('social__picture');
-  newCommentAvatar.src = massUserComment.avatar;
-  newCommentAvatar.alt = massUserComment.name;
-  newCommentAvatar.style = 'width: 35px; height: 35px';
-  newComment.append(newCommentAvatar);
-  var newCommentText = document.createElement('p');
-  newCommentText.classList.add('social__text');
-  newCommentText.textContent = massUserComment.message;
-  newComment.append(newCommentText);
-
-  return socialComments.append(newComment);
+var createBigPicture = function (photo) {
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo.url;
+  bigPicture.querySelector('.likes-count').textContent = photo.likes;
+  bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = photo.description;
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
-commentUser();
+var bigСommentsList = bigPicture.querySelector('.social__comments');
+bigСommentsList.innerHTML = ' ';
 
-document.querySelector('.social__caption').textContent = massUser[0].description;
-document.querySelector('.social__comment-count').classList.add('hidden');
-document.querySelector('.comments-loader').classList.add('hidden');
-//  document.querySelector('body').classList.add('modal-open');
+var createComment = function (commentary) {
+  var comment = document.createElement('li');
+  comment.classList.add('social__comment');
+  bigСommentsList.append(comment);
 
+  var img = document.createElement('img');
+  img.classList.add('social__picture');
+  img.src = commentary.avatar;
+  img.alt = commentary.name;
+  img.width = '35';
+  img.height = '35';
+  comment.append(img);
+
+  var text = document.createElement('p');
+  text.classList.add('social__text');
+  text.textContent = commentary.message;
+  comment.append(text);
+};
+
+var createCommentsPool = function (photo) {
+  for (i = 0; i < photo.comments.length; i++) {
+    createComment(photo.comments[i]);
+  }
+};
+
+// Для всех полноразмерных фотографий
+
+var thumbnailes = pictures.querySelectorAll('.picture');
+
+var addClickHandler = function (thumbnail, photo) {
+  thumbnail.addEventListener('click', function () {
+    createBigPicture(photo);
+    createCommentsPool(photo);
+    openBigPhoto();
+  });
+};
+
+for (i = 0; i < thumbnailes.length; i++) {
+  addClickHandler(thumbnailes[i], massUser[i]);
+}
+
+var bigPhotoCancel = document.querySelector('#picture-cancel');
+
+var onBigPhotoEscPress = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeBigPhoto();
+  }
+};
+
+var openBigPhoto = function () {
+  bigPicture.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+
+  document.addEventListener('keydown', onBigPhotoEscPress);
+};
+
+var closeBigPhoto = function () {
+  bigPicture.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  bigСommentsList.innerHTML = ' ';
+
+  document.removeEventListener('keydown', onBigPhotoEscPress);
+};
+
+bigPhotoCancel.addEventListener('click', function () {
+  closeBigPhoto();
+});
+
+// открытие и закрытие редактирования картинки
 var uploadFile = document.querySelector('#upload-file');
 var body = document.querySelector('body');
 var imageEditingForm = document.querySelector('.img-upload__overlay');
@@ -115,7 +168,6 @@ var uploadCancel = document.querySelector('#upload-cancel');
 var originalEffect = imageEditingForm.querySelector('input[id=effect-none]');
 var effectLevel = imageEditingForm.querySelector('.effect-level');
 
-// открытие и закрытие картинки
 function openPopup () {
   body.classList.add('modal-open');
   imageEditingForm.classList.remove('hidden');
