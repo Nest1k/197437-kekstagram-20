@@ -5,15 +5,13 @@ var LIKE_NUMBER_MIN = 15;
 var LIKE_NUMBER_MAX = 200;
 var AVATAR_NUMBER_MIN = 1;
 var AVATAR_NUMBER_MAX = 6;
-var PHOTO_SCALE_VALUE_MIN = '25%';
-var PHOTO_SCALE_VALUE_MAX = '100%';
 
 
-function getRandomInteger (min, max) {
+function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function getRandomArray (elementsArray) {
+function getRandomArray(elementsArray) {
   var randomElement = elementsArray[Math.floor(Math.random() * elementsArray.length)];
   return randomElement;
 };
@@ -22,18 +20,18 @@ var messages = ['Всё отлично!', 'Моя бабушка случайн�
 var names = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 
 var massUser = [];
-function genUser () {
+function genUser() {
   var usersObject =
-    {
-      url: 'photos/' + getRandomInteger(PHOTO_NUMBER_MIN, PHOTO_NUMBER_MAX) + '.jpg',
-      description: "Xnotik",
-      likes: getRandomInteger(LIKE_NUMBER_MIN, LIKE_NUMBER_MAX),
-      comments:
+  {
+    url: 'photos/' + getRandomInteger(PHOTO_NUMBER_MIN, PHOTO_NUMBER_MAX) + '.jpg',
+    description: "Xnotik",
+    likes: getRandomInteger(LIKE_NUMBER_MIN, LIKE_NUMBER_MAX),
+    comments:
       [
         {
-        avatar: 'img/avatar-' + getRandomInteger(AVATAR_NUMBER_MIN, AVATAR_NUMBER_MAX) + '.svg',
-        message: getRandomArray(messages),
-        name: getRandomArray(names)
+          avatar: 'img/avatar-' + getRandomInteger(AVATAR_NUMBER_MIN, AVATAR_NUMBER_MAX) + '.svg',
+          message: getRandomArray(messages),
+          name: getRandomArray(names)
         },
         {
           avatar: 'img/avatar-' + getRandomInteger(AVATAR_NUMBER_MIN, AVATAR_NUMBER_MAX) + '.svg',
@@ -41,7 +39,7 @@ function genUser () {
           name: getRandomArray(names)
         }
       ]
-    }
+  }
   return usersObject;
 };
 
@@ -58,7 +56,7 @@ var picture = document.querySelector('#picture').content.querySelector('.picture
 
 var fragment = document.createDocumentFragment();
 
-function drawUser (user) {
+function drawUser(user) {
   var usersElement = picture.cloneNode(true);
   usersElement.querySelector('.picture__img').src = user.url;
   usersElement.querySelector('.picture__likes').textContent = user.likes;
@@ -76,7 +74,7 @@ pictures.appendChild(fragment);
 
 var massUserComment = massUser[0].comments[0];
 
-// Для одной полноразмерной фотографии
+// Для одной полноразмерной фотографии preview
 var bigPicture = document.querySelector('.big-picture');
 
 var createBigPicture = function (photo) {
@@ -160,7 +158,9 @@ bigPhotoCancel.addEventListener('click', function () {
   closeBigPhoto();
 });
 
-// открытие и закрытие редактирования картинки
+// открытие и закрытие редактирования картинки form
+var PHOTO_SCALE_VALUE_MIN = '25%';
+var PHOTO_SCALE_VALUE_MAX = '100%';
 var uploadFile = document.querySelector('#upload-file');
 var body = document.querySelector('body');
 var imageEditingForm = document.querySelector('.img-upload__overlay');
@@ -168,7 +168,7 @@ var uploadCancel = document.querySelector('#upload-cancel');
 var originalEffect = imageEditingForm.querySelector('input[id=effect-none]');
 var effectLevel = imageEditingForm.querySelector('.effect-level');
 
-function openPopup () {
+function openPopup() {
   body.classList.add('modal-open');
   imageEditingForm.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
@@ -176,7 +176,7 @@ function openPopup () {
   effectLevel.classList.add('hidden');
 };
 
-function closePopup () {
+function closePopup() {
   body.classList.remove('modal-open');
   imageEditingForm.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
@@ -186,19 +186,19 @@ function closePopup () {
   photoWithEffect.style.filter = '';
 };
 
-function onPopupEscPress (evt) {
+function onPopupEscPress(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closePopup();
   }
 };
 
-uploadFile.addEventListener ('change', function() {
+uploadFile.addEventListener('change', function () {
   openPopup();
   photoWithEffect.className = ('effects__preview--none');
 });
 
-uploadCancel.addEventListener ('click', function(evt) {
+uploadCancel.addEventListener('click', function (evt) {
   evt.preventDefault();
   closePopup();
 });
@@ -233,7 +233,7 @@ var effectPinInput = document.querySelector('.effect-level__value');
 // смена класса для фото
 var effectsList = document.querySelector('.img-upload__effects');
 
-function filterChangeHandler (evt) {
+function filterChangeHandler(evt) {
   photoWithEffect.className = 'effects__preview--' + evt.target.value;
   photoWithEffect.style.filter = '';
   if (!originalEffect.checked) {
@@ -246,22 +246,22 @@ function filterChangeHandler (evt) {
 effectsList.addEventListener('change', filterChangeHandler);
 
 //  установка фильтра для фото
-function appliesFilter () {
-var objectFilter = {
-  chrome: 'grayscale(' + effectPinInput.value / 100 + ')',
-  sepia: 'sepia(' + effectPinInput.value / 100 + ')',
-  marvin: 'invert(' + effectPinInput.value + '%)',
-  phobos: 'blur(' + effectPinInput.value * 0.03 + 'px)',
-  heat: 'brightness(' + effectPinInput.value * 0.02 + 1 + ')'
-};
-for (var key in objectFilter) {
-  if(photoWithEffect.className.includes(key)) {
-    photoWithEffect.style.filter = objectFilter[key];
+function appliesFilter() {
+  var objectFilter = {
+    chrome: 'grayscale(' + effectPinInput.value / 100 + ')',
+    sepia: 'sepia(' + effectPinInput.value / 100 + ')',
+    marvin: 'invert(' + effectPinInput.value + '%)',
+    phobos: 'blur(' + effectPinInput.value * 0.03 + 'px)',
+    heat: 'brightness(' + effectPinInput.value * 0.02 + 1 + ')'
+  };
+  for (var key in objectFilter) {
+    if (photoWithEffect.className.includes(key)) {
+      photoWithEffect.style.filter = objectFilter[key];
+    }
   }
-}
 };
 
-effectLevelPin.addEventListener ('mouseup', appliesFilter);
+effectLevelPin.addEventListener('mouseup', appliesFilter);
 
 // Хэш-теги
 
@@ -326,6 +326,8 @@ hashtagsInput.addEventListener('input', function () {
     hashtagsInput.setCustomValidity('');
   }
 });
+
+commentInput.maxLength = 140;
 
 commentInput.addEventListener('input', function () {
   if (commentInput.validity.tooLong) {
