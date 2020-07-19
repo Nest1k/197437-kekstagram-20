@@ -9,6 +9,7 @@
   var uploadCancel = document.querySelector('#upload-cancel');
   var originalEffect = imageEditingForm.querySelector('input[id=effect-none]');
   var effectLevel = imageEditingForm.querySelector('.effect-level');
+  var MAX_LENGTH_SLIDER = 450;
 
   function openPopup() {
     body.classList.add('modal-open');
@@ -71,30 +72,33 @@
 
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectPinInput = document.querySelector('.effect-level__value');
+  var effectLevelDepth = document.querySelector('.effect-level__depth');
 
   // смена класса для фото
-  var effectsList = document.querySelector('.img-upload__effects');
+  var effectsImage = document.querySelector('.img-upload__effects');
 
   function filterChangeHandler(evt) {
     photoWithEffect.className = 'effects__preview--' + evt.target.value;
     photoWithEffect.style.filter = '';
     if (!originalEffect.checked) {
       effectLevel.classList.remove('hidden');
+      effectLevelPin.style.left = '100%';
+      effectLevelDepth.style.width = '100%';
     } else {
       effectLevel.classList.add('hidden');
     }
   }
 
-  effectsList.addEventListener('change', filterChangeHandler);
+  effectsImage.addEventListener('change', filterChangeHandler);
 
   //  установка фильтра для фото
-  function appliesFilter() {
+  function appliesFilter(value) {
     var objectFilter = {
-      chrome: 'grayscale(' + effectPinInput.value / 100 + ')',
-      sepia: 'sepia(' + effectPinInput.value / 100 + ')',
-      marvin: 'invert(' + effectPinInput.value + '%)',
-      phobos: 'blur(' + effectPinInput.value * 0.03 + 'px)',
-      heat: 'brightness(' + effectPinInput.value * 0.02 + 1 + ')'
+      chrome: 'grayscale(' + value / 100 + ')',
+      sepia: 'sepia(' + value / 100 + ')',
+      marvin: 'invert(' + value + '%)',
+      phobos: 'blur(' + value * 0.03 + 'px)',
+      heat: 'brightness(' + value * 0.02 + 1 + ')'
     };
     for (var key in objectFilter) {
       if (photoWithEffect.className.includes(key)) {
@@ -103,8 +107,56 @@
     }
   };
 
-  effectLevelPin.addEventListener('mouseup', appliesFilter);
+  effectLevelPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
 
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: evt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: evt.clientY
+      };
+
+      if (parseInt(effectLevelPin.style.left, 10) < 0) {
+        effectLevelPin.style.left = '0';
+        shift.x = 0;
+        onMouseUp(moveEvt);
+      } else if (parseInt(effectLevelPin.style.left, 10) > MAX_LENGTH_SLIDER) {
+        effectLevelPin.style.left = MAX_LENGTH_SLIDER + 'px';
+        shift.x = 0;
+        onMouseUp(moveEvt);
+      } else {
+        effectLevelPin.style.left = (effectLevelPin.offsetLeft - shift.x) + 'px';
+      }
+
+      effectPinInput.value = parseInt(effectLevelPin.style.left, 10) * 100 / MAX_LENGTH_SLIDER;
+
+      appliesFilter(effectPinInput.value);
+
+      effectLevelDepth.style.width = effectPinInput.value + '%';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
   // Хэш-теги
 
   var commentInput = imageEditingForm.querySelector('.text__description');
