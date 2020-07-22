@@ -12,13 +12,13 @@
   var addClickHandler = function (thumbnail, photo) {
     thumbnail.addEventListener('click', function () {
       window.preview.createBigPicture(photo);
-      window.preview.createCommentsPool(photo);
+      //window.preview.createCommentsPool(photo);
       openBigPhoto();
     });
   };
 
   for (var i = 0; i < thumbnailes.length; i++) {
-    addClickHandler(thumbnailes[i], window.data.massUser[i]);
+    addClickHandler(thumbnailes[i], window.data.massUsers[i]);
   }
 
   var bigPhotoCancel = document.querySelector('#picture-cancel');
