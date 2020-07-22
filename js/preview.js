@@ -43,8 +43,8 @@
   window.preview = {
     bigPicture: bigPicture,
     bigСommentsList: bigСommentsList,
-    createBigPicture: createBigPicture,
-    createCommentsPool: createCommentsPool
+    createBigPicture: createBigPicture
+    //createCommentsPool: createCommentsPool
   };
 
 })();
