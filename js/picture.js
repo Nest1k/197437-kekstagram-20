@@ -3,8 +3,6 @@
   var pictures = document.querySelector('.pictures');
   var picture = document.querySelector('#picture').content.querySelector('.picture');
 
- // var fragment = document.createDocumentFragment();
-
   function drawUser(user) {
     var usersElement = picture.cloneNode(true);
     usersElement.querySelector('.picture__img').src = user.url;
