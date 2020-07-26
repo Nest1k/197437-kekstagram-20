@@ -42,6 +42,6 @@
     getRandomArrWithoutRepeat: getRandomArrWithoutRepeat,
     isEnterEvent: isEnterEvent,
     isEscEvent: isEscEvent
-  }
+  };
 
 })();

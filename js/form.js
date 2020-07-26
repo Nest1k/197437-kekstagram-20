@@ -12,7 +12,7 @@
   var effectLevel = imageEditingForm.querySelector('.effect-level');
 
 
-  function openPopup() {
+  var openPopup = function () {
     body.classList.add('modal-open');
     imageEditingForm.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
@@ -20,7 +20,7 @@
     effectLevel.classList.add('hidden');
   };
 
-  function closePopup() {
+  var closePopup = function () {
     body.classList.remove('modal-open');
     imageEditingForm.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
@@ -33,7 +33,7 @@
     commentInput.value = '';
   };
 
-  function onPopupEscPress(evt) {
+  var onPopupEscPress = function (evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       closePopup();
@@ -96,7 +96,7 @@
   effectsImage.addEventListener('change', filterChangeHandler);
 
   //  установка фильтра для фото
-  function appliesFilter(value) {
+  var appliesFilter = function (value) {
     var objectFilter = {
       chrome: 'grayscale(' + value / 100 + ')',
       sepia: 'sepia(' + value / 100 + ')',
@@ -234,5 +234,5 @@
 
   window.form = {
     closePopup: closePopup,
-  }
+  };
 })();
