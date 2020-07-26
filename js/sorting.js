@@ -23,18 +23,18 @@
     if (evt.target.matches('button')) {
       for (var i = 0; i < imgFiltersButtons.length; i++) {
         imgFiltersButtons[i].classList.remove('img-filters__button--active');
-      }
+      };
       evt.target.classList.add('img-filters__button--active');
-    }
+    };
     if (evt.target === filterDefault) {
       window.filteredGallery.onDefault();
-    }
+    };
     if (evt.target === filterRandom) {
       window.filteredGallery.onRandom();
-    }
+    };
     if (evt.target === filterDiscussed) {
       window.filteredGallery.onDiscussed();
-    }
+    };
   }));
 
 })();

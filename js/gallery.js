@@ -17,7 +17,7 @@
     return pictureElement;
   };
 
-  var renderGallery = function (response) {
+  window.renderGallery = function (response) {
     var previousPictures = picturesWrapper.querySelectorAll('a.picture');
     for (var j = 0; j < previousPictures.length; j++) {
       picturesWrapper.removeChild(previousPictures[j]);
@@ -30,14 +30,14 @@
 
   window.backend.load(function (response) {
     pictures = response;
-    renderGallery(pictures);
+    window.renderGallery(pictures);
 
     window.filteredGallery = {
       onDefault: function () {
         pictures = [];
         amount = 25;
         pictures = response;
-        renderGallery(pictures);
+        window.renderGallery(pictures);
       },
       onRandom: function () {
         pictures = [];
@@ -46,14 +46,14 @@
         for (var n = 0; n < numbers.length; n++) {
           pictures.push(response[numbers[n]]);
         }
-        renderGallery(pictures);
+        window.renderGallery(pictures);
       },
       onDiscussed: function () {
         pictures = [];
         amount = 25;
         pictures = response.slice();
         pictures = window.getDiscussed(pictures).reverse();
-        renderGallery(pictures);
+        window.renderGallery(pictures);
       }
     };
 
@@ -76,6 +76,6 @@
 
     imgFilters.classList.remove('img-filters--inactive');
 
-  }, window.messages.errorHandler);
+  }, window.backend.onError);
 
 })();

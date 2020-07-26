@@ -11,9 +11,23 @@
     }
   };
 
+  var onLoadClickPress = function (evt) {
+    if (evt.target !== loadMessage.querySelector('.success__inner') && (evt.target !== loadMessage.querySelector('.success__title'))) {
+      closeMessage();
+    }
+  };
+
+  var onErrorClickPress = function (evt) {
+    if (evt.target !== errorMessage.querySelector('.error__inner') && (evt.target !== errorMessage.querySelector('.error__title'))) {
+      closeMessage();
+    }
+  };
+
   var closeMessage = function () {
     document.querySelector('body').classList.remove('modal-open');
     document.removeEventListener('keydown', onMessageEscPress);
+    document.removeEventListener('click', onLoadClickPress);
+    document.removeEventListener('click', onErrorClickPress);
     if (main.contains(loadMessage)) {
       loadMessage.parentNode.removeChild(loadMessage);
     } else if (main.contains(errorMessage)) {
@@ -29,20 +43,12 @@
 
   var onLoad = function () {
     renderMessage(loadMessage);
-    document.addEventListener('click', function (evt) {
-      if (evt.target !== loadMessage.querySelector('.success__inner') && (evt.target !== loadMessage.querySelector('.success__title'))) {
-        closeMessage();
-      }
-    });
+    document.addEventListener('click', onLoadClickPress);
   };
 
   var onError = function () {
     renderMessage(errorMessage);
-    document.addEventListener('click', function (evt) {
-      if (evt.target !== errorMessage.querySelector('.error__inner') && (evt.target !== errorMessage.querySelector('.error__title'))) {
-        closeMessage();
-      }
-    });
+    document.addEventListener('click', onErrorClickPress);
   };
 
   var form = document.querySelector('.img-upload__form');

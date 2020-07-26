@@ -34,7 +34,7 @@
   };
 
   var onPopupEscPress = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === 'Escape' && evt.target !== hashtagsInput && evt.target !== commentInput) {
       evt.preventDefault();
       closePopup();
     }
@@ -169,6 +169,7 @@
     for (var i = 0; i < arr.length; i++) {
       if (!reg.test(arr[i])) {
         flag = false;
+        break;
       }
     }
     return flag;
@@ -179,6 +180,7 @@
     for (var i = 0; i < arr.length; i++) {
       if (arr[i].length < 2 || arr[i].length > 20) {
         flag = false;
+        break;
       }
     }
     return flag;
@@ -207,18 +209,23 @@
 
     if (checkRegular(hashtags, regular) === false) {
       hashtagsInput.setCustomValidity('Должны быть только цифры и буквы, а начинаться с #');
+      hashtagsInput.style.boxShadow = 'inset 0 0 0 5px red';
 
     } else if (checkLength(hashtags) === false) {
       hashtagsInput.setCustomValidity('Хэштег должен быть меньше, чем из 20 символов');
+      hashtagsInput.style.boxShadow = 'inset 0 0 0 5px red';
 
     } else if (checkRepeat(hashtags) === false) {
       hashtagsInput.setCustomValidity('Не должно быть повторяющихся хэштегов');
+      hashtagsInput.style.boxShadow = 'inset 0 0 0 5px red';
 
     } else if (hashtags.length > 5) {
       hashtagsInput.setCustomValidity('Слишком много, нужно не больше 5 хэштегов');
+      hashtagsInput.style.boxShadow = 'inset 0 0 0 5px red';
 
     } else {
       hashtagsInput.setCustomValidity('');
+      hashtagsInput.style.boxShadow = 'none';
     }
   });
 
@@ -227,8 +234,10 @@
   commentInput.addEventListener('input', function () {
     if (commentInput.validity.tooLong) {
       commentInput.setCustomValidity('Комментарий слишком длинный');
+      commentInput.style.boxShadow = 'inset 0 0 0 5px red';
     } else {
       commentInput.setCustomValidity('');
+      commentInput.style.boxShadow = 'none';
     }
   });
 
