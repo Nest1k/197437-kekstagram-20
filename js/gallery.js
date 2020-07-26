@@ -63,7 +63,7 @@
       socialCommentsWrapper.innerHTML = '';
       for (var c = 0; c < pictures[numberOfPic].comments.length; c++) {
         var comment = document.createElement('li');
-        comment.className = 'social__comment hidden';
+        comment.className = 'social__comment';
         comment.innerHTML = '<img width="35" height="35" class="social__picture" > <p class="social__text"></p>';
         comment.querySelector('.social__picture').src = pictures[numberOfPic].comments[c].avatar;
         comment.querySelector('.social__picture').alt = pictures[numberOfPic].comments[c].name;
