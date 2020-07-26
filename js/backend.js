@@ -11,6 +11,8 @@
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
+      xhr.open('GET', URL);
+
       xhr.addEventListener('load', function () {
         if (xhr.status === StatusCode.OK) {
           onLoad(xhr.response);
@@ -28,10 +30,8 @@
 
       xhr.timeout = TIMEOUT_IN_MS;
 
-      xhr.open('GET', URL);
       xhr.send();
     },
-
     sendForm: function (data, onLoad, onError) {
       var URL = 'https://javascript.pages.academy/kekstagram';
       var xhr = new XMLHttpRequest();
